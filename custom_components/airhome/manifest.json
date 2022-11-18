@@ -1,0 +1,16 @@
+{
+  "domain": "airhome",
+  "name": "AIRHOME",
+  "version": "1.0.0",
+  "config_flow": false,
+  "documentation": "https://www.home-assistant.io/integrations/airhome",
+  "requirements": [""],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@ghiottolino"
+  ],
+  "iot_class": "cloud_polling"
+}

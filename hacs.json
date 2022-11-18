@@ -1,0 +1,4 @@
+{
+    "name": "AirHome Home Assistant",
+    "domains": ["sensor"]
+}
