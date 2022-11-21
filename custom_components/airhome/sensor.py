@@ -38,7 +38,7 @@ async def async_setup_platform(
 ) -> None:
     """Config entry example."""
     
-    logging.info("initializing E3DC sensors with config:")
+    logging.info("initializing AirHome sensors with config:")
     logging.info(config)    
     
     COOKIE = config['cookie']
@@ -76,7 +76,7 @@ class AirHomeSensor(SensorEntity):
     _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
 
-    def __init__(self, api, e3dc_data):
+    def __init__(self, api, airhome_data):
         self.api = api
         self.airhome_api = airhome_api
         
