@@ -12,7 +12,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from homeassistant.const import POWER_WATT, PERCENTAGE
+from homeassistant.const import PERCENTAGE, TEMP_CELSIUS, ENERGY_KILO_WATT_HOUR
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -48,7 +48,7 @@ async def async_setup_platform(
     airhome_data = AirHomeData()
     
     async_add_entities(
-        [VolumeFlowInput(airhome_api, airhome_data), RoomTemperature(airhome_api, airhome_data), Humidiy(airhome_api, airhome_data), HeatEmission(airhome_api, airhome_data)]
+        [AirHomeSensor(airhome_api, airhome_data), VolumeFlowInput(airhome_data), RoomTemperature(airhome_data), Humidiy(airhome_data), HeatEmission(airhome_data)]
     )
 
 
@@ -72,13 +72,12 @@ class AirHomeSensor(SensorEntity):
     """Representation of a Sensor."""
 
     _attr_name = "AirHome Sensor"
-    #_attr_native_unit_of_measurement = POWER_WATT
     _attr_device_class = SensorDeviceClass.POWER
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, api, airhome_data):
         self.api = api
-        self.airhome_api = airhome_api
+        self.airhome_data = airhome_data
         
     def update(self) -> None:
         """Fetch new state data for the sensor.
@@ -92,8 +91,8 @@ class AirHomeSensor(SensorEntity):
 
 class VolumeFlowInput(SensorEntity):
     _attr_name = "AirHome Volume Flow"
-    _attr_native_unit_of_measurement = POWER_WATT
-    _attr_device_class = SensorDeviceClass.POWER
+    _attr_native_unit_of_measurement = TEMP_CELSIUS
+    _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, airhome_data):
@@ -106,8 +105,8 @@ class VolumeFlowInput(SensorEntity):
 
 class RoomTemperature(SensorEntity):
     _attr_name = "AirHome Room Temperature"
-    _attr_native_unit_of_measurement = POWER_WATT
-    _attr_device_class = SensorDeviceClass.POWER
+    _attr_native_unit_of_measurement = TEMP_CELSIUS
+    _attr_device_class = SensorDeviceClass.TEMPERATURE
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, airhome_data):
@@ -120,8 +119,8 @@ class RoomTemperature(SensorEntity):
 
 class Humidiy(SensorEntity):
     _attr_name = "AirHome Humidiy"
-    _attr_native_unit_of_measurement = POWER_WATT
-    _attr_device_class = SensorDeviceClass.POWER
+    _attr_native_unit_of_measurement = PERCENTAGE
+    _attr_device_class = SensorDeviceClass.HUMIDITY
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, airhome_data):
@@ -134,8 +133,8 @@ class Humidiy(SensorEntity):
 
 class HeatEmission(SensorEntity):
     _attr_name = "AirHome Heat Emission"
-    _attr_native_unit_of_measurement = POWER_WATT
-    _attr_device_class = SensorDeviceClass.POWER
+    _attr_native_unit_of_measurement = ENERGY_KILO_WATT_HOUR
+    _attr_device_class = SensorDeviceClass.ENERGY
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, airhome_data):
