@@ -48,7 +48,7 @@ async def async_setup_platform(
     airhome_data = AirHomeData()
     
     async_add_entities(
-        [VolumeFlowInput(airhome_api, airhome_data), ]
+        [VolumeFlowInput(airhome_api, airhome_data), RoomTemperature(airhome_api, airhome_data), Humidiy(airhome_api, airhome_data), HeatEmission(airhome_api, airhome_data)]
     )
 
 

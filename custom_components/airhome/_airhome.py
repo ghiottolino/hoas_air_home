@@ -47,9 +47,9 @@ class AIRHOME:
     def poll(self):
         try:
             connection = http.client.HTTPSConnection("air-home.de", 443)
-            headers = {'Cookie':' ASP.NET_SessionId=v3gmmyed0jpm1jz42qmmpnp1; __RequestVerificationToken=3pZvuhk3UKj6Y65mITYI1v2Vwv2pzLPhoy_GODjykhjVZl_kOfrW5VLAe66wSpITW2wSb5L1hfGAnXc3LoaysNTjq5B6dk65o3nN85XAuo41'}
+            headers = {'Cookie':self.cookie}
             connection.debuglevel = 1
-            connection.request('GET', '/api/systemdatas/2798/info?configNames=volumeflowinput&amp;configNames=temproom&amp;configNames=controlvaluefaneta&amp;configNames=controlvaluefansup&amp;configNames=humidityoutput&amp;configNames=sensoren&amp;configNames=heat_emission&amp;configNames=',"",headers)
+            connection.request('GET', '/api/systemdatas/'+self.serialNumber+'/info?configNames=volumeflowinput&amp;configNames=temproom&amp;configNames=controlvaluefaneta&amp;configNames=controlvaluefansup&amp;configNames=humidityoutput&amp;configNames=sensoren&amp;configNames=heat_emission&amp;configNames=',"",headers)
             response = connection.getresponse()
             content = response.read().decode('utf-8')
             print(content)
