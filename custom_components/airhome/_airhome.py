@@ -4,9 +4,10 @@
 # Copyright 2022 Nicola Tesser <ghiottolino@gmail.com>
 # Licensed under a MIT license. See LICENSE for details
 
-import urllib.request
-import urllib.parse
+#import urllib.request
+#import urllib.parse
 import json
+import http.client
 
 REMOTE_ADDRESS = "https://www.air-home.de/api/systemdatas/2798/info?configNames=volumeflowinput&configNames=temproom&configNames=controlvaluefaneta&configNames=controlvaluefansup&configNames=humidityoutput&configNames=sensoren&configNames=heat_emission&configNames="
 REQUEST_INTERVAL_SEC = 10  # minimum interval between requests
@@ -45,10 +46,19 @@ class AIRHOME:
 
     def poll(self):
         try:
-            req = urllib.request.Request(REMOTE_ADDRESS)
-            req.add_header('Cookie','ASP.NET_SessionId=rblivq0yhpmhrulrmd2edo50')
-            f = urllib.request.urlopen(req)
-            data = json.loads(f.read().decode('utf-8'))
+            connection = http.client.HTTPSConnection("air-home.de", 443)
+            headers = {'Cookie':' ASP.NET_SessionId=v3gmmyed0jpm1jz42qmmpnp1; __RequestVerificationToken=3pZvuhk3UKj6Y65mITYI1v2Vwv2pzLPhoy_GODjykhjVZl_kOfrW5VLAe66wSpITW2wSb5L1hfGAnXc3LoaysNTjq5B6dk65o3nN85XAuo41'}
+            connection.debuglevel = 1
+            connection.request('GET', '/api/systemdatas/2798/info?configNames=volumeflowinput&amp;configNames=temproom&amp;configNames=controlvaluefaneta&amp;configNames=controlvaluefansup&amp;configNames=humidityoutput&amp;configNames=sensoren&amp;configNames=heat_emission&amp;configNames=',"",headers)
+            response = connection.getresponse()
+            content = response.read().decode('utf-8')
+            print(content)
+            data = json.loads(content)
+            
+            #req = urllib.request.Request(REMOTE_ADDRESS)
+            #req.add_header('Cookie','ASP.NET_SessionId=rblivq0yhpmhrulrmd2edo50')
+            #f = urllib.request.urlopen(req)
+            #data = json.loads(f.read().decode('utf-8'))
             return data
         except:
             raise AuthenticationError("Error communicating with server")
