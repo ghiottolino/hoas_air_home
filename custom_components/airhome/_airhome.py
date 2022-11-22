@@ -45,7 +45,7 @@ class AIRHOME:
 
     def poll(self):
         try:
-            req = urllib.request.Request(REMOTE_ADDRESS.replace('{SERIALNUMBER}', self.serialNumber)
+            req = urllib.request.Request(REMOTE_ADDRESS.replace('{SERIALNUMBER}', self.serialNumber))
             req.add_header('Cookie',self.cookie)
             f = urllib.request.urlopen(req)
             data = json.loads(f.read().decode('utf-8'))
