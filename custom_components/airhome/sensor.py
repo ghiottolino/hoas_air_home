@@ -12,7 +12,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from homeassistant.const import PERCENTAGE, TEMP_CELSIUS, ENERGY_KILO_WATT_HOUR
+from homeassistant.const import PERCENTAGE, TEMP_CELSIUS, ENERGY_KILO_WATT_HOUR, VOLUME_FLOW_RATE_CUBIC_METERS_PER_HOUR
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -91,8 +91,8 @@ class AirHomeSensor(SensorEntity):
 
 class VolumeFlowInput(SensorEntity):
     _attr_name = "AirHome Volume Flow"
-    _attr_native_unit_of_measurement = TEMP_CELSIUS
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
+    _attr_native_unit_of_measurement = VOLUME_FLOW_RATE_CUBIC_METERS_PER_HOUR
+    _attr_device_class = SensorDeviceClass.VOLUME
     _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, airhome_data):
