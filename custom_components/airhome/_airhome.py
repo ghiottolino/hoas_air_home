@@ -4,12 +4,11 @@
 # Copyright 2022 Nicola Tesser <ghiottolino@gmail.com>
 # Licensed under a MIT license. See LICENSE for details
 
-#import urllib.request
-#import urllib.parse
+import urllib.request
+import urllib.parse
 import json
-import http.client
 
-REMOTE_ADDRESS = "https://www.air-home.de/api/systemdatas/2798/info?configNames=volumeflowinput&configNames=temproom&configNames=controlvaluefaneta&configNames=controlvaluefansup&configNames=humidityoutput&configNames=sensoren&configNames=heat_emission&configNames="
+REMOTE_ADDRESS = "https://www.air-home.de/api/systemdatas/{SERIALNUMBER}/info?configNames=volumeflowinput&configNames=temproom&configNames=controlvaluefaneta&configNames=controlvaluefansup&configNames=humidityoutput&configNames=sensoren&configNames=heat_emission&configNames="
 REQUEST_INTERVAL_SEC = 10  # minimum interval between requests
 REQUEST_INTERVAL_SEC_LOCAL = 1  # minimum interval between requests
 
@@ -46,19 +45,10 @@ class AIRHOME:
 
     def poll(self):
         try:
-            connection = http.client.HTTPSConnection("air-home.de", 443)
-            headers = {'Cookie':self.cookie}
-            connection.debuglevel = 1
-            connection.request('GET', '/api/systemdatas/'+self.serialNumber+'/info?configNames=volumeflowinput&amp;configNames=temproom&amp;configNames=controlvaluefaneta&amp;configNames=controlvaluefansup&amp;configNames=humidityoutput&amp;configNames=sensoren&amp;configNames=heat_emission&amp;configNames=',"",headers)
-            response = connection.getresponse()
-            content = response.read().decode('utf-8')
-            print(content)
-            data = json.loads(content)
-            
-            #req = urllib.request.Request(REMOTE_ADDRESS)
-            #req.add_header('Cookie','ASP.NET_SessionId=rblivq0yhpmhrulrmd2edo50')
-            #f = urllib.request.urlopen(req)
-            #data = json.loads(f.read().decode('utf-8'))
+            req = urllib.request.Request(REMOTE_ADDRESS.replace('{SERIALNUMBER}', self.serialNumber)
+            req.add_header('Cookie',self.cookie)
+            f = urllib.request.urlopen(req)
+            data = json.loads(f.read().decode('utf-8'))
             return data
         except:
             raise AuthenticationError("Error communicating with server")
